@@ -24,6 +24,14 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
+    - name: Check JAR location
+      run: ls -lh build/libs
+
+    - name: Prepare JAR for Docker
+      run: |
+        mkdir -p build/libs
+        cp build/libs/*.jar build/libs/my-app-1.0-SNAPSHOT.jar
+
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
@@ -31,4 +39,4 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        directory: .   # Ensure context includes build/libs
+        directory: .
